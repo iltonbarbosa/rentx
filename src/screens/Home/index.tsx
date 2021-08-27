@@ -1,8 +1,7 @@
 import React from 'react';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 import Logo from '../../assets/logo.svg';
 
@@ -16,17 +15,10 @@ import {
    CarList
  } from './styles';
 
- type RootStackParamList = {
-	CarDetails: undefined;
-  };
-  
-  type HomeScreenNavigationProp = StackNavigationProp<
-	RootStackParamList,
-	'CarDetails'
-  >;
 
 export function Home(){
-	const { navigate } = useNavigation<HomeScreenNavigationProp>();
+	const navigation = useNavigation();
+
 	const carData = {
 		brand: 'Audi',
 		name: 'RS 5 Coupé',
@@ -35,6 +27,10 @@ export function Home(){
 			price: 120,
 		},
 		thumbnail: 'https://spng.pngfind.com/pngs/s/133-1331571_download-audi-png-auto-car-imag-png-images.png'
+	}
+
+	function handleCarDetails(){
+		navigation.navigate('CarDetails');
 	}
 
 return(
@@ -61,7 +57,7 @@ return(
 			keyExtractor={item => String(item)}
 			renderItem={({ item }) => 
 				<Car data={carData}
-				onPress={() => navigate('CarDetails')}/>}
+				onPress={handleCarDetails}/>}
 		/>
 	</Container>
 	);
