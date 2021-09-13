@@ -1,12 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StatusBar, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
+import { useTheme } from 'styled-components';
 
 import { BackButton } from '../../components/BackButton';
 import { LoadAnimation } from '../../components/LoadAnimation';
-import { useTheme } from 'styled-components';
 import { Car } from '../../components/Car';
+
 import { CarDTO } from '../../dtos/CarDTO';
 import api from '../../services/api';
 
@@ -39,13 +40,14 @@ import {
 export function MyCars(){
 	const [cars, setCars] = useState<CarProps[]>([]);
 	const [loading, setLoading] = useState(true);
+
 	const theme = useTheme();
 	const navigation = useNavigation();
 
 	useEffect(() => {
 		async function fetchCars(){
 			try {
-				const response = await api.get('/schedules_byuser?user_id=1');
+				const response = await api.get('schedules_byuser?user_id=1');
 				setCars(response.data);
 			} catch (error) {
 				console.log(error);
@@ -56,7 +58,7 @@ export function MyCars(){
 		fetchCars();
 	},[]);
 
-	function handleBack(){
+	function handleGoBack(){
 		navigation.goBack();	
 	}
 
@@ -69,7 +71,7 @@ export function MyCars(){
 				backgroundColor="transparent"
 			 />
 			 <BackButton 
-			 	onPress={handleBack}
+			 	onPress={handleGoBack}
 				color={theme.colors.shape}	 
 			/>
 
@@ -92,7 +94,7 @@ export function MyCars(){
 
 			<FlatList 
 				data={cars}
-				keyExtractor={item => item.id}
+				keyExtractor={item => String(item.id)}
 				showsVerticalScrollIndicator={false}
 				renderItem={({ item }) => (
 					<CarWrapper>

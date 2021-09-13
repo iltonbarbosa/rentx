@@ -20,7 +20,6 @@ import { CarDTO } from '../../dtos/CarDTO';
 import { 
    Container,
    Header,
-   CarImages,
    Details,
    Description,
    Brand,
@@ -30,6 +29,9 @@ import {
    Price,
    About,
    Accessories,
+   AnimatedHeaderAndSlider,
+   AnimatedCarImages,
+   AnimatedContent,
    Footer
  } from './styles';
 
@@ -42,6 +44,7 @@ export function CarDetails(){
 	const navigation = useNavigation();
 	const route = useRoute();
 	const { car } = route.params as Params;
+	const statusBarHeight = getStatusBarHeight();
 
 	const theme = useTheme();
 
@@ -55,7 +58,7 @@ export function CarDetails(){
 			height: interpolate(
 				scrollY.value,
 				[0, 200],
-				[200, 70],
+				[200, statusBarHeight + 50],
 				Extrapolate.CLAMP
 			),
 		}
@@ -72,12 +75,13 @@ export function CarDetails(){
 		}
 	});
 
-	function handleConfirmRental(){
+	function handleChooseRentalPeriod(){
 		navigation.navigate('Scheduling', {car});
 	}
 
-	function handleBack(){
-		navigation.goBack();	
+	function handleGoBack(){
+		if(navigation.canGoBack())
+			navigation.goBack();	
 	}
 
   return(
@@ -87,29 +91,20 @@ export function CarDetails(){
 			translucent
 			backgroundColor="transparent"
 		/> 	
-		<Animated.View
-			style={[headerStyleAnimation, 
-					styles.header,
-					{ backgroundColor: theme.colors.background_secondary}
-				]}
-		>
+		<AnimatedHeaderAndSlider
+			style={headerStyleAnimation}>
 			<Header>
-				<BackButton onPress={handleBack} />
+				<BackButton onPress={handleGoBack} />
 			</Header>
-			<Animated.View style={sliderCarsStyleAnimation}>
-				<CarImages>
-					<ImageSlider imagesUrl={car.photos}/>
-				</CarImages>	
-			</Animated.View>
-		</Animated.View>	
+			<AnimatedCarImages style={sliderCarsStyleAnimation}>
+				<ImageSlider 
+					imagesUrl={car.photos}
+				/>
+			</AnimatedCarImages>
+		</AnimatedHeaderAndSlider>	
 
-		 <Animated.ScrollView
-		 		contentContainerStyle= {{
-					paddingHorizontal: 24,
-					paddingTop: getStatusBarHeight() + 160,
-				}}
-				showsVerticalScrollIndicator={false}
-				onScroll={scrollHandler}
+		 <AnimatedContent
+		 		onScroll={scrollHandler}
 				scrollEventThrottle={16}
 		 >
 			 <Details>
@@ -134,11 +129,11 @@ export function CarDetails(){
 				}
 			 </Accessories>
 
-			 <About>{car.about}</About>
-		 </Animated.ScrollView>
+			 <About>{car.about} {car.about}</About>
+		 </AnimatedContent>
 
 		 <Footer>
-			 <Button title="Escolher período do aluguel" onPress={handleConfirmRental} />
+			 <Button title="Escolher período do aluguel" onPress={handleChooseRentalPeriod} />
 		 </Footer>
 	 </Container>
   );
