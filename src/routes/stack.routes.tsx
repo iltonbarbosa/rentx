@@ -11,16 +11,22 @@ import { SchedulingDetails } from '../screens/SchedulingDetails';
 import { SchedulingComplete } from '../screens/SchedulingComplete';
 import { MyCars } from '../screens/MyCars';
 import { Splash } from '../screens/Splash';
+import { Signin } from '../screens/Signin';
+import { SignUpFirstStep } from '../screens/SignUp/SignUpFirstStep';
 
 export function StackRoutes(){
 	return(
 		<Navigator 
-			initialRouteName="Splash" 
+			initialRouteName="Signin" 
 			screenOptions={{ headerShown: false }}>
 
 			<Screen 
-				name="Splash"
-				component={Splash}
+				name="Signin"
+				component={Signin}
+			/>
+			<Screen 
+				name="SignUpFirstStep"
+				component={SignUpFirstStep}
 			/>
 			<Screen 
 				name="Home"
