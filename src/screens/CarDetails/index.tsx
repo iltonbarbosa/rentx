@@ -45,7 +45,7 @@ export function CarDetails(){
 	const route = useRoute();
 	const { car } = route.params as Params;
 	const statusBarHeight = getStatusBarHeight();
-
+	console.log(car);
 	const theme = useTheme();
 
 	const scrollY = useSharedValue(0);
@@ -114,8 +114,8 @@ export function CarDetails(){
 				 </Description>
 
 				 <Rent>
-					 <Period>{car.rent.period}</Period>
-					 <Price>R$ {car.rent.price}</Price>
+					 <Period>{car.period}</Period>
+					 <Price>R$ {car.price}</Price>
 				 </Rent>
 			 </Details>
 			 

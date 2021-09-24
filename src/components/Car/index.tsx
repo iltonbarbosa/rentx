@@ -22,6 +22,7 @@ import {
  }
 
 export function Car({ data, ...rest } : Props){
+
 	const MotorIcon = getAccessoryIcon(data.fuel_type);
   return(
 	 <Container {...rest }>
@@ -31,8 +32,8 @@ export function Car({ data, ...rest } : Props){
 
 			 <About>
 				 <Rent>
-					 <Periodo>{data.rent.period}</Periodo>
-					 <Price>{`RS ${data.rent.price}`}</Price>
+					 <Periodo>{data.period}</Periodo>
+					 <Price>{`RS ${data.price}`}</Price>
 				 </Rent>
 
 				 <Type>
