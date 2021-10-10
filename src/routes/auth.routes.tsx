@@ -2,13 +2,13 @@ import React from 'react';
 
 import { createStackNavigator  } from '@react-navigation/stack';
 
-const { Navigator, Screen } = createStackNavigator ();
-
 import { Confirmation } from '../screens/Confirmation';
 import { Splash } from '../screens/Splash';
-import { Signin } from '../screens/Signin';
+import { SignIn } from '../screens/SignIn';
 import { SignUpFirstStep } from '../screens/SignUp/SignUpFirstStep';
 import { SignUpSecondStep } from '../screens/SignUp/SignUpSecondStep';
+
+const { Navigator, Screen } = createStackNavigator ();
 
 export function AuthRoutes(){
 	return(
@@ -21,8 +21,8 @@ export function AuthRoutes(){
 				component={Splash}
 			/>
 			<Screen 
-				name="Signin"
-				component={Signin}
+				name="SignIn"
+				component={SignIn}
 			/>
 			<Screen 
 				name="SignUpFirstStep"

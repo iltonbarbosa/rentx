@@ -29,6 +29,7 @@ interface AuthContextData{
 	signIn: (credentials: SignInCredentials) => Promise<void>;
 	signOut: () => Promise<void>;
 	updateUser: (user: User) => Promise<void>;
+	loading: boolean;
 }
 
 interface AuthProviderProps {
@@ -39,6 +40,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 function AuthProvider({ children } : AuthProviderProps){
 	const [data, setData] = useState<User>({} as User);
+	const [loading, setLoading] = useState(false);
 
 	async function signIn({ email, password } : SignInCredentials){
 		
@@ -64,7 +66,7 @@ function AuthProvider({ children } : AuthProviderProps){
 
 			setData({ ...user, token });
 		} catch (error) {
-			throw new Error("erro no cadastro"+error);
+			throw new Error("erro no login: "+error);
 		}
 	}
 
@@ -87,7 +89,7 @@ function AuthProvider({ children } : AuthProviderProps){
 		try {
 			const userCollection = database.get<ModelUser>('users');
 			await database.action(async () => {
-				const userSelected = await userCollection.find(data.id);
+				const userSelected = await userCollection.find(user.id);
 				await userSelected.update(( userData ) => {
 						userData.name = user.name,
 						userData.driver_license = user.driver_license,
@@ -104,18 +106,21 @@ function AuthProvider({ children } : AuthProviderProps){
 
 	useEffect(() => {
 		async function loadUserData() {
+			console.log('------ conectando com o banco-----');
+			
 			const userCollection = database.get<ModelUser>('users');
 			const response = await userCollection.query().fetch();
-
+			console.log(response);
 			if(response.length > 0){
 				const userData = response[0]._raw as unknown as User;
 				api.defaults.headers.authorization = `Bearer ${userData.token}`;
 				setData(userData);
+				setLoading(false);
 			}
 		}
 
 		loadUserData();
-	})
+	},[]);
 
 	return (
 		<AuthContext.Provider
@@ -123,7 +128,8 @@ function AuthProvider({ children } : AuthProviderProps){
 				user: data,
 				signIn,
 				signOut,
-				updateUser
+				updateUser,
+				loading
 			}}
 		>
 			{children}

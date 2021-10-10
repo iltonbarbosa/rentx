@@ -22,7 +22,7 @@ import {
    Footer
  } from './styles';
 
-export function Signin(){
+export function SignIn(){
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
 
