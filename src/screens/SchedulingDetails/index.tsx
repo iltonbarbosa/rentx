@@ -69,14 +69,9 @@ export function SchedulingDetails(){
 
 	async function handleConfirmRental(){
 		setLoading(true);
-		const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
-		const unavailable_dates = [
-			...schedulesByCar.data.unavailable_dates,
-			...dates,
-		];``
-
+		
 		await api.post('rentals', {
-			user_id: 1,
+			user_id: '1',
 			car_id: car.id,
 			start_date: new Date(dates[0]),
 			end_date: new Date(dates[dates.length - 1]),
@@ -92,7 +87,7 @@ export function SchedulingDetails(){
 		})
 		.catch(() => {
 			setLoading(false);
-			Alert.alert('Não foi possível gravar o agendamento')
+			Alert.alert('----------- Não foi possível gravar o agendamento')
 		});
 	}
 

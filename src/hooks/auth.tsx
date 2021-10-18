@@ -106,11 +106,10 @@ function AuthProvider({ children } : AuthProviderProps){
 
 	useEffect(() => {
 		async function loadUserData() {
-			console.log('------ conectando com o banco-----');
 			
 			const userCollection = database.get<ModelUser>('users');
 			const response = await userCollection.query().fetch();
-			console.log(response);
+			
 			if(response.length > 0){
 				const userData = response[0]._raw as unknown as User;
 				api.defaults.headers.authorization = `Bearer ${userData.token}`;

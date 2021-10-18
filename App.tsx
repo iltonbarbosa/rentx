@@ -1,5 +1,6 @@
 import React from 'react';
 import AppLoading from 'expo-app-loading';
+import { LogBox } from 'react-native';
 import { ThemeProvider } from 'styled-components';
 import { AppProvider } from './src/hooks';
 
@@ -26,6 +27,10 @@ export default function App() {
 		Archivo_500Medium,
 		Archivo_600SemiBold
 	});
+
+	LogBox.ignoreLogs([
+		'Non-serializable values were found in the navigation state',
+	   ]);
 
 	if(!fontsLoaded){
 		return <AppLoading />
